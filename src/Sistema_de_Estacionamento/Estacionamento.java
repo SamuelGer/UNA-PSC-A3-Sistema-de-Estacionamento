@@ -12,8 +12,7 @@ public class Estacionamento {
     private boolean aberto = false;
 
 
-
-    public void registrarEntrada(){
+    public void registrarEntrada() {
         Scanner input = new Scanner(System.in);
         System.out.print("Placa: ");
         String placa = input.nextLine();
@@ -22,9 +21,11 @@ public class Estacionamento {
                 "\n[2] - Carro");
         int tipo = input.nextInt();
         input.nextLine();
+
         System.out.println("Hora de entrada: ");
-        LocalDateTime hora = capturarHora();
+        LocalDateTime hora = Veiculo.capturarHora();
         Veiculo veic = new Veiculo(tipo, placa, hora);
+
         //Adicionando os veiculos as arrays.
         if (veiculos.size() < 15) {
             veiculos.add(veic);
@@ -69,7 +70,7 @@ public class Estacionamento {
         for (int i = 0; i < veiculos.size(); i++) {
             Veiculo v = veiculos.get(i);
             System.out.println((i + 1) + ". " + v.getPlaca() +
-                    " - " + (v.getTipo() == 1 ? "Moto" : "Carro"));
+                    " - " + (v.getOpcao() == 1 ? "Moto" : "Carro"));
         }
     }
 
@@ -88,11 +89,11 @@ public class Estacionamento {
         System.out.print("Placa: ");
         String placa1 = input.nextLine();
         //Buscar o veiculo pela placa.
-        Veiculo veiculo = buscarVeiculo(placa1);
+        Veiculo veicu = buscarVeiculo(placa1);
         for (Veiculo veiculo : veiculos) {
-            if (veiculo.getPlaca().equalsIgnoreCase(placa1)) {
+            if (veicu.getPlaca().equalsIgnoreCase(placa1)) {
                 System.out.println("Veículo presente no estacionamento! " + placa1);
-                System.out.println("A Hora de Entrada é: " + getHoraEntrada());
+                System.out.println("A Hora de Entrada é: " + veiculo.getHoraEntrada());
             } else {
                 System.out.println("Veiculo não encontrado com a placa: " + placa1);
             }
