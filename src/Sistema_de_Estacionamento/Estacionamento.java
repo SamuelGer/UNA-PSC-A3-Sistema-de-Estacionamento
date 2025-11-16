@@ -1,9 +1,5 @@
 package Sistema_de_Estacionamento;
 
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.temporal.ChronoUnit;
-import java.util.Scanner;
 import java.util.ArrayList;
 
 public class Estacionamento {
