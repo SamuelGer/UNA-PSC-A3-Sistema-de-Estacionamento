@@ -57,9 +57,10 @@ public class Veiculo {
     public LocalDateTime capturarHoraManual(Scanner Horaentrada) {
         
         //Bloco usado para capturar a hora informada pelo usuario.
+
         try {
             System.out.println("Digite a data e hora de entrada(Formato: dia/mês/ano e Horas:Minutos): ");
-            String Hora_de_entrada = Hora_de_entrada.nextLine();
+            String Hora_de_entrada= Horaentrada.nextLine();
             DateTimeFormatter formatter= DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
             return LocalDateTime.parse(Hora_de_entrada, formatter);
 
