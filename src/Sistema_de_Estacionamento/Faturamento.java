@@ -16,12 +16,12 @@ public class Faturamento {
 
     //Calcula o valor a pagar baseado no tempo em minutos
 
-    public double calcularValor(long minutos) {
-        if (minutos < 0) {
-            throw new IllegalArgumentException("Tempo não pode ser negativo" + minutos);
+    public double calcularValor(long calcularPermanencia) {
+        if (calcularPermanencia < 0) {
+            throw new IllegalArgumentException("Tempo não pode ser negativo" + calcularPermanencia);
         }
 
-        int horas = (int) Math.ceil(minutos / 60.0);
+        int horas = (int) Math.ceil(calcularPermanencia / 60.0);
 
         if (horas <= 1 && Veiculo.getOpcao() == 1) {
             return primeiraHoraMoto;
@@ -37,17 +37,17 @@ public class Faturamento {
 
         //Processa o pagamento de uma estadia e atualiza o total faturado
 
-        public double registrarPagamento ( long minutos){
-            double valor = calcularValor(minutos);
+        public double registrarPagamento ( long calcularPermanencia){
+            double valor = calcularValor(calcularPermanencia);
             adicionarAoTotal(valor);
             return valor;
         }
 
         //Formata o tempo em horas e minutos
 
-        public String formatarTempo (long minutos){
-            long horas = minutos / 60;
-            long minRestantes = minutos % 60;
+        public String formatarTempo (long calcularPermanencia){
+            long horas = calcularPermanencia / 60;
+            long minRestantes = calcularPermanencia % 60;
             return String.format("%d horas e %d minutos", horas, minRestantes);
         }
 
