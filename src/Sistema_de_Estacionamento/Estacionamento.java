@@ -10,6 +10,7 @@ public class Estacionamento {
     private ArrayList<Veiculo>  veiculos = new ArrayList<>();
     private ArrayList<Veiculo> fila = new ArrayList<>();
     private boolean aberto = false;
+    private double totArrecadado;
 
 
     public void registrarEntrada() {
@@ -59,6 +60,10 @@ public class Estacionamento {
             veiculos.add(proximo);
             System.out.println("Veículo da fila (" + proximo.getPlaca() + ") entrou no estacionamento!");
         }
+        /*Parte do bloco de código onde o usuário faz o pagamento do estacionamento
+         e acumula os valores no atributo totArrecadado */
+
+
     }
 
     public void quantidadeVagas(){
