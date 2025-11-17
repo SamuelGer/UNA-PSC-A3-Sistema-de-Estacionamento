@@ -28,6 +28,7 @@ public class Veiculo {
         return tipo;
     }
 
+    //Construtor
     public Veiculo(int tipo, String placa,LocalDateTime hora) {
         this.tipo = selecionarTipo();
         this.placa = placa;
@@ -41,7 +42,7 @@ public class Veiculo {
         System.out.println("Como você quer registrar a hora de entrada? ");
         System.out.println("(1) Informar a hora Manual: ");
         System.out.println("(2) Usar a hora atual: ");
-        System.out.println("Opção: ");
+        System.out.print("Opção: ");
 
         int opcao = ler.nextInt();
         ler.nextLine(); // Limpar Entrada
@@ -56,11 +57,12 @@ public class Veiculo {
 
     public static LocalDateTime capturarHoraManual(Scanner Horaentrada) {
 
-        //Bloco usado para capturar a hora informada pelo usuario.
+        //Bloco usado para capturar a hora INFORMADA PELO USUÁRIO.
 
         try {
             System.out.println("Digite a data e hora de entrada(Formato: dia/mês/ano e Horas:Minutos): ");
             String Hora_de_entrada= Horaentrada.nextLine();
+
             DateTimeFormatter formatter= DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
             return LocalDateTime.parse(Hora_de_entrada, formatter);
 
@@ -74,10 +76,10 @@ public class Veiculo {
     public static LocalDateTime capturarHoraAutomatica() {
 
         //Bloco usado para usar a entrada na horário atual.
-        System.out.println("--CAPTURANDO HORA REAL");
+        System.out.println("------CAPTURADO A HORA REAL------");
         LocalDateTime horaAtual = LocalDateTime.now();
         DateTimeFormatter formatter= DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-        System.out.println("Hora de entrada registrada automaticamente: " + horaAtual);
+        System.out.println("Hora de entrada registrada automaticamente: " + formatter.format(horaAtual));
         return horaAtual;
     }
 
@@ -89,8 +91,10 @@ public class Veiculo {
         return placa;
     }
 
-    public LocalDateTime getHoraEntrada() {
-        return horaEntrada;
+    public String getHoraEntrada() {
+        DateTimeFormatter formatter= DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        //System.out.println("Hora de entrada registrada automaticamente: " + formatter.format(horaEntrada));
+        return formatter.format(horaEntrada);
     }
 
     public LocalDateTime getHoraSaida() {

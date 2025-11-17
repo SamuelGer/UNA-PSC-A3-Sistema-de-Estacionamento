@@ -35,19 +35,19 @@ public class Menu {
                     //Implementar as funções de cada case
                         switch (escolha) {
                             case 1:
-
+                            estacionamento.registrarEntrada();
                                 break;
                             case 2:
-
+                            estacionamento.registrarSaida();
                                 break;
                             case 3:
-
+                            estacionamento.quantidadeVagas();
                                 break;
                             case 4:
-
+                            estacionamento.mostrarVeiculos();
                                 break;
                             case 5:
-
+                            estacionamento.buscarVeiculoPorPlaca();
                                 break;
                             case 6:
 
