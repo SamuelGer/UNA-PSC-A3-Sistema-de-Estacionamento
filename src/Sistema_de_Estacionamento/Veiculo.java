@@ -9,7 +9,7 @@ import java.time.Duration;
 
 public class Veiculo {
     private String tipo;
-    private int opcao;
+    private static int opcao;
     private String placa;
     private LocalDateTime horaEntrada;
     private LocalDateTime horaSaida;
@@ -103,7 +103,7 @@ public class Veiculo {
         return horaSaida;
     }
 
-    public int getOpcao() {
+    public  static int getOpcao() {
         return opcao;
     }
 
