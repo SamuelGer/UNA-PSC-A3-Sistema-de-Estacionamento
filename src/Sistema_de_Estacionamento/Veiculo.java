@@ -85,6 +85,8 @@ public class Veiculo {
 
     public void registrarHoraSaida(){
         this.horaSaida = LocalDateTime.now();
+        DateTimeFormatter formatter= DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        System.out.println("Hora da Saída: " + formatter.format(horaSaida));
     }
 
     public String getPlaca() {

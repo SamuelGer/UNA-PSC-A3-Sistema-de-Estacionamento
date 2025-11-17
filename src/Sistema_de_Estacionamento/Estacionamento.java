@@ -98,7 +98,6 @@ public class Estacionamento {
         //Se não há veículos no estacionamento, imprimirá a mensagem ao usuário.
         if (veiculos.isEmpty()) {
             System.out.println("Este veículo não esta no estacionamento. O estacionamento está vazio.");
-            input.nextLine(); //Limpa o buffer
         }
         //Busca o veiculo pela placa.
             for (Veiculo veiculo : veiculos) {
