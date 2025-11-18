@@ -4,66 +4,79 @@ import java.time.LocalDateTime;
 import java.util.Scanner;
 import java.util.ArrayList;
 
+
 public class Estacionamento {
-    private int vagas = 15;
-    private int vagasUsadas = 0;
-    private ArrayList<Veiculo>  veiculos = new ArrayList<>();
-    private ArrayList<Veiculo> fila = new ArrayList<>();
-    private boolean aberto = false;
-    private double totArrecadado;
+    private final int vagas = 15;
+    private final ArrayList<Veiculo> veiculos = new ArrayList<>();
+    private final ArrayList<Veiculo> fila = new ArrayList<>();
+    private final boolean aberto;
+
 
 
     public void registrarEntrada() {
         Scanner input = new Scanner(System.in);
         //Recebendo a placa do veículo
         System.out.print("Placa: ");
-        String placa = input.nextLine();
+            String placa = input.nextLine();
         //Recebendo o tipo do veículo
-        System.out.print("Tipo do Veiculo: " +
-                "\n[1] - Moto" +
-                "\n[2] - Carro" +
-                "\nEscolha: ");
-        int tipo = input.nextInt();
-        input.nextLine();
+            Faturamento.getTarifas();
+        System.out.print("""
+                
+                Tipo do Veiculo: \
+                
+                [1] - Moto\
+                
+                [2] - Carro\
+                
+                Escolha:\s""");
+            int tipo = input.nextInt();
+            input.nextLine();
         //Recebendo a hora da entrada
-        System.out.println("Hora de entrada: ");
-        LocalDateTime hora = Veiculo.capturarHora();
+        LocalDateTime hora = Veiculo.capturarHoraEntrada();
         //Instanciação do objeto
         Veiculo veic = new Veiculo(tipo, placa, hora);
 
         //Adicionando os veiculos as arrays
-        if (veiculos.size() < vagas) {
-            veiculos.add(veic);
-            System.out.println("Veículo registrado com sucesso! Vagas: " + veiculos.size() + "/" + vagas);
-        } else {
-            System.out.println("Estacionamento cheio! Veículo foi movido para a fila de espera.");
-            fila.add(veic); //Se o estacionamento estiver cheio, cai na fila.
-        }
+            if (veiculos.size() < vagas) {
+                veiculos.add(veic);
+                System.out.println("Veículo registrado com sucesso! Vagas: " + veiculos.size() + "/" + vagas);
+            } else {
+                    System.out.println("Estacionamento cheio! Veículo foi movido para a fila de espera.");
+                    fila.add(veic); //Se o estacionamento estiver cheio, cai na fila.
+            }
     }
 
     public void registrarSaida(){
         Scanner input = new Scanner(System.in);
         System.out.print("Placa: ");
-        String placa = input.nextLine();
+        String placa = input.nextLine().toLowerCase();
         //Buscar o veiculo pela placa.
         Veiculo veiculo = buscarVeiculo(placa);
-        if (veiculo == null) {
-            System.out.println("Veículo não encontrado no estacionamento!");
-            return;
-        } else{  //remove o veículo do estacionamento e registra saida.
-            veiculos.remove(veiculo);
-            veiculo.registrarHoraSaida();
-            System.out.println("Saída registrada com sucesso!");
-        }
-        if (!fila.isEmpty()) {
-            Veiculo proximo = fila.removeFirst();
-            veiculos.add(proximo);
-            System.out.println("Veículo da fila (" + proximo.getPlaca() + ") entrou no estacionamento!");
-        }
-        /*Parte do bloco de código onde o usuário faz o pagamento do estacionamento
-         e acumula os valores no atributo totArrecadado */
-
-
+            if (veiculo == null) {
+                System.out.println("Veículo não encontrado no estacionamento!");
+                    return;
+            } else{  //remove o veículo do estacionamento e registra saida.
+                    veiculos.remove(veiculo);
+                    veiculo.registrarHoraSaida();
+                    System.out.println("Saída registrada com sucesso!");
+            }
+            if (!fila.isEmpty()) {
+                Veiculo proximo = fila.removeFirst();
+                veiculos.add(proximo);
+                System.out.println("Veículo da fila (" + proximo.getPlaca() + ") entrou no estacionamento!");
+            }
+            /*Parte do bloco de código onde o usuário faz o pagamento do estacionamento
+            e acumula os valores no atributo totalFaturado */
+            Faturamento faturamento = new Faturamento();
+            //Calculo do tempo de permanencia do veiuclo.
+            long minutosPermanencia = veiculo.calcularPermanencia();
+            //Metodo de faturamento onde calcula o valor com a diferença se é moto ou carro
+            double valor = faturamento.calcularValor(veiculo.getOpcao(), minutosPermanencia);
+            //Adiciona o valor ao totalFaturamento
+            faturamento.registrarPagamento(valor);
+            //Feedback ao usuario
+            System.out.println("Tempo de permanência: "+ minutosPermanencia + " minutos");
+            System.out.println("Valor pago: R$ "+ String.format("%.2f", valor));
     }
 
     public void quantidadeVagas(){
@@ -80,10 +93,10 @@ public class Estacionamento {
             Veiculo v = veiculos.get(i);
             System.out.println((i + 1) + ". Placa: " + v.getPlaca() +
                     " - Tipo: " + (v.getOpcao() == 1 ? "Moto" : "Carro"));
-        }          //A opção é 1 ? Se SIM, resposta é "Moto" : Senão, resposta é "Carro"
+        }          //A opção é 1 ? Se SIM, resposta é "Moto" : Senão, resposta é "Carro" (if --> ? else --> : .)
     }
 
-    //Método auxiliar para a busca de veiculos no método mostrarVeiculos
+    //Método auxiliar para a busca de veiculos no método mostrarVeiculo
     private Veiculo buscarVeiculo(String placa) {
         for (Veiculo veiculo : veiculos) {
             if (veiculo.getPlaca().equalsIgnoreCase(placa)) {
@@ -97,14 +110,14 @@ public class Estacionamento {
     public void buscarVeiculoPorPlaca() {
         Scanner input = new Scanner(System.in);
         System.out.print("Placa: ");
-        String placa1 = input.nextLine();
+        String placa1 = input.nextLine().toLowerCase();
 
         Veiculo vc = buscarVeiculo(placa1);
         //Se não há veículos no estacionamento, imprimirá a mensagem ao usuário.
-        if (veiculos.isEmpty()) {
-            System.out.println("Este veículo não esta no estacionamento. O estacionamento está vazio.");
-        }
-        //Busca o veiculo pela placa.
+            if (veiculos.isEmpty()) {
+                System.out.println("Este veículo não esta no estacionamento. O estacionamento está vazio.");
+            }
+            //Busca o veiculo pela placa.
             for (Veiculo veiculo : veiculos) {
                 if (vc.getPlaca().equalsIgnoreCase(placa1)) {
                     System.out.println("Veículo presente no estacionamento! \nPlaca: " + placa1);
@@ -117,7 +130,11 @@ public class Estacionamento {
     }
 
     public void relatorioFaturamento(){
-
+        System.out.println("Total arrecadado no dia: " +
+                            "\n ------");
+        Faturamento faturamento = new Faturamento();
+        double totalFaturado = faturamento.getTotalFaturado();
+        System.out.printf("Total faturado no dia: R$ %.2f", totalFaturado);
 
     }
 
@@ -126,32 +143,11 @@ public class Estacionamento {
 
 
     //Metodos Especiais
-
     public Estacionamento() {
         aberto = true;
     }
 
-    public int getVagas() {
-        return vagas;
-    }
-
-    public void setVagas(int vagas) {
-        this.vagas = vagas;
-    }
-
-    public int getVagasUsadas() {
-        return vagasUsadas;
-    }
-
-    public void setVagasUsadas(int vagasUsadas) {
-        this.vagasUsadas = vagasUsadas;
-    }
-
     public boolean isAberto() {
         return aberto;
-    }
-
-    public void setAberto(boolean aberto) {
-        this.aberto = aberto;
     }
 }

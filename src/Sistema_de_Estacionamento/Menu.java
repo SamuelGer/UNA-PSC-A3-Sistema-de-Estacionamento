@@ -9,6 +9,7 @@ public class Menu {
     private Estacionamento estacionamento;
     private boolean executando;
 
+
     //Construtor
         public Menu() {
         this.ler = new Scanner(System.in);
@@ -35,22 +36,28 @@ public class Menu {
                     //Implementar as funções de cada case
                         switch (escolha) {
                             case 1:
+                                Clear();
                             estacionamento.registrarEntrada();
+                                Clear();
                                 break;
                             case 2:
+                                Clear();
                             estacionamento.registrarSaida();
                                 break;
                             case 3:
+                                Clear();
                             estacionamento.quantidadeVagas();
                                 break;
                             case 4:
+                                Clear();
                             estacionamento.mostrarVeiculos();
                                 break;
                             case 5:
+                                Clear();
                             estacionamento.buscarVeiculoPorPlaca();
                                 break;
                             case 6:
-
+                            estacionamento.relatorioFaturamento();
                                 break;
                             case 7:
                                 System.out.println("Encerrando...");
@@ -78,4 +85,29 @@ public class Menu {
         public void closeMenu() {
         escolha = 8;
         }
+
+
+        //Método para organizar/limpar o console
+        public static void Clear() {
+            try {
+                // Tenta sequências ANSI
+                System.out.print("\033[H\033[2J");
+                System.out.flush();
+
+                // Espera um pouco
+                Thread.sleep(50);
+
+                // Imprime linha em branco como backup
+                for (int i = 0; i < 2; i++) {
+                    System.out.println();
+                }
+            } catch (Exception ex) {
+                // Último fallback
+                for (int i = 0; i < 2; i++) {
+                    System.out.println();
+                }
+            }
+              
+        }     
     }
+

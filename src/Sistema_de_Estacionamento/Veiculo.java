@@ -1,21 +1,27 @@
 package Sistema_de_Estacionamento;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.util.Scanner;
 import java.time.Duration;
 
 public class Veiculo {
     private String tipo;
-    private static int opcao;
+    private int opcao;
     private String placa;
     private LocalDateTime horaEntrada;
     private LocalDateTime horaSaida;
 
-    public String selecionarTipo(){
+    //Construtor
+    public Veiculo(int opcao, String placa,LocalDateTime hora) {
+        this.opcao = opcao;
+        this.tipo = selecionarTipo();
+        this.placa = placa;
+        this.horaEntrada = hora;
 
+    }
+
+    public String selecionarTipo(){
         //Bloco usado para escolher se o veículo é carro ou moto
         switch (opcao){
             case 1:
@@ -24,30 +30,25 @@ public class Veiculo {
             case 2:
                 this.tipo = "Carro";
                 break;
+            default:
+                System.out.println("Digite somente 1 ou 2.");
         }
         return tipo;
     }
 
-    //Construtor
-    public Veiculo(int tipo, String placa,LocalDateTime hora) {
-        this.tipo = selecionarTipo();
-        this.placa = placa;
-        this.horaEntrada = hora;
-
-    }
-
-    public static LocalDateTime capturarHora() {
+    //ENTRADAS ---------------------------------------------------------------------------------------
+    public static LocalDateTime capturarHoraEntrada() {
     Scanner ler = new Scanner(System.in);
         //Central usada para dar as duas opções de captura a entrada do veiculo.
-        System.out.println("Como você quer registrar a hora de entrada? ");
-        System.out.println("(1) Informar a hora Manual: ");
+        System.out.println("Registre a hora de entrada: ");
+        System.out.println("(1) Informar a hora Manualmente: ");
         System.out.println("(2) Usar a hora atual: ");
         System.out.print("Opção: ");
 
-        int opcao = ler.nextInt();
+        int opcao1 = ler.nextInt();
         ler.nextLine(); // Limpar Entrada
 
-        switch (opcao) {
+        switch (opcao1) {
             case 1:
                 return capturarHoraManual(ler);
             default:
@@ -67,7 +68,7 @@ public class Veiculo {
             return LocalDateTime.parse(Hora_de_entrada, formatter);
 
         } catch (Exception e) {
-            System.out.println("Formato Inválido! Usando hora atual. ");
+            System.out.println("Formato Inválido! Usando a sua hora atual. ");
             return LocalDateTime.now();
         }
 
@@ -82,12 +83,54 @@ public class Veiculo {
         System.out.println("Hora de entrada registrada automaticamente: " + formatter.format(horaAtual));
         return horaAtual;
     }
+    //----------------------------------------------------------------------------------------------
 
-    public void registrarHoraSaida(){
-        this.horaSaida = LocalDateTime.now();
+
+    //SAIDAS ---------------------------------------------------------------------------------------
+    public LocalDateTime registrarHoraSaida(){
+        Scanner ler = new Scanner(System.in);
+        //Central usada para dar as duas opções de captura a saida do veiculo.
+        System.out.println("Registre a hora de saída. ");
+        System.out.println("(1) Informar a hora Manualmente: ");
+        System.out.println("(2) Usar a hora atual: ");
+        System.out.print("Opção: ");
+
+        int opcao1 = ler.nextInt();
+        ler.nextLine(); // Limpar Entrada
+
+        switch (opcao1) {
+            case 1:
+                return registrarHoraSaidaManual(ler);
+            default:
+                return registrarHoraSaidaAutomatica();
+        }
+    }
+
+    public LocalDateTime registrarHoraSaidaManual(Scanner Horasaida) {
+        //Bloco usado para capturar a hora INFORMADA PELO USUÁRIO.
+        try {
+            System.out.println("Digite a data e hora de saída(Formato: dia/mês/ano e Horas:Minutos): ");
+            String Hora_de_saida= Horasaida.nextLine();
+
+            DateTimeFormatter formatter= DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+            return horaSaida = LocalDateTime.parse(Hora_de_saida, formatter);
+
+        } catch (Exception e) {
+            System.out.println("Formato Inválido! Usando a sua hora atual. ");
+            return LocalDateTime.now();
+        }
+
+    }
+
+
+    public LocalDateTime registrarHoraSaidaAutomatica(){
+        horaSaida = LocalDateTime.now();
         DateTimeFormatter formatter= DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
         System.out.println("Hora da Saída: " + formatter.format(horaSaida));
+        return null;
     }
+    //----------------------------------------------------------------------------------------------
+
 
     public String getPlaca() {
         return placa;
@@ -95,17 +138,13 @@ public class Veiculo {
 
     public String getHoraEntrada() {
         DateTimeFormatter formatter= DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-        //System.out.println("Hora de entrada registrada automaticamente: " + formatter.format(horaEntrada));
         return formatter.format(horaEntrada);
     }
 
-    public LocalDateTime getHoraSaida() {
-        return horaSaida;
-    }
+    public int getOpcao() {
+            return this.opcao;
+        }
 
-    public  static int getOpcao() {
-        return opcao;
-    }
 
     public long calcularPermanencia(){
         if (horaEntrada == null || horaSaida == null) {
