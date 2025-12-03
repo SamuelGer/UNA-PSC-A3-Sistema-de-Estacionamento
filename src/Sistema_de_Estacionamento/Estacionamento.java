@@ -10,6 +10,7 @@ public class Estacionamento {
     private final ArrayList<Veiculo> veiculos = new ArrayList<>();
     private final ArrayList<Veiculo> fila = new ArrayList<>();
     private final boolean aberto;
+    private Faturamento faturamento = new Faturamento();
 
 
 
@@ -67,7 +68,6 @@ public class Estacionamento {
             }
             /*Parte do bloco de código onde o usuário faz o pagamento do estacionamento
             e acumula os valores no atributo totalFaturado */
-            Faturamento faturamento = new Faturamento();
             //Calculo do tempo de permanencia do veiuclo.
             long minutosPermanencia = veiculo.calcularPermanencia();
             //Metodo de faturamento onde calcula o valor com a diferença se é moto ou carro
@@ -130,12 +130,7 @@ public class Estacionamento {
     }
 
     public void relatorioFaturamento(){
-        System.out.println("Total arrecadado no dia: " +
-                            "\n ------");
-        Faturamento faturamento = new Faturamento();
-        double totalFaturado = faturamento.getTotalFaturado();
-        System.out.printf("Total faturado no dia: R$ %.2f", totalFaturado);
-
+        System.out.printf("Total faturado no dia: R$ %.2f", faturamento.getTotalFaturado());
     }
 
 

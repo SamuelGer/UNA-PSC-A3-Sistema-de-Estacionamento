@@ -33,13 +33,17 @@ public class Faturamento {
 
 
         public void registrarPagamento(double valor) {
-            this.totalFaturado += valor;
+            totalFaturado += valor;
+        }
+
+        public void relatorio(){
+            System.out.printf("Total faturado no dia: R$ %.2f", getTotalFaturado());
         }
 
         //Formata o tempo em horas e minutos
 
         public double getTotalFaturado () {
-            return this.totalFaturado;
+            return totalFaturado;
         }
 
         // Retorna valor das tarifas
